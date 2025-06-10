@@ -65,7 +65,12 @@ public class StudentServiceImp implements StudentService {
             if (imageFile != null && !imageFile.isEmpty()) {
                 Map uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
                 student.setAvatar(uploadResult.get("url").toString());
+            } else {
+                // Giữ lại avatar cũ
+                Student oldStudent = studentRepository.findById(student.getId());
+                student.setAvatar(oldStudent.getAvatar());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

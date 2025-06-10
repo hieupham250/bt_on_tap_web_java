@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <a href="/courses/add">Thêm mới khóa học</a> <br> <br>
-    <h2>Danh sách khóa học</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
+<body class="container mt-4">
+    <a href="/courses/add" class="btn btn-primary mb-3">Thêm mới khóa học</a> <br> <br>
+    <h2 class="mb-3">Danh sách khóa học</h2>
+    <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-dark">
         <tr>
-            <th>Mã khóa học</th>
-            <th>Tên khóa học</th>
-            <th>Mô tả</th>
-            <th>Hành động</th>
+            <th scope="col">Mã khóa học</th>
+            <th scope="col">Tên khóa học</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -22,8 +23,10 @@
             <td th:text="${c.name}"></td>
             <td th:text="${c.description}"></td>
             <td>
-                <a th:href="@{'/courses/edit/' + ${c.id}}">Sửa</a>
-                <a th:href="@{'/courses/delete/' + ${c.id}}" onclick="return confirm('Xác nhận xóa?')">Xóa</a>
+                <a th:href="@{'/courses/edit/' + ${c.id}}" class="btn btn-sm btn-warning me-2">Sửa</a>
+                <a th:href="@{'/courses/delete/' + ${c.id}}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Xác nhận xóa?')">Xóa</a>
             </td>
         </tr>
         </tbody>

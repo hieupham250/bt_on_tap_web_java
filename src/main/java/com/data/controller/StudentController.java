@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,6 +32,7 @@ public class StudentController {
         long totalStudents = studentService.countWithFilter(keyword);
         int totalPages = (int) Math.ceil((double) totalStudents / size);
 
+        model.addAttribute("courses", courseService.findAll());
         model.addAttribute("students", students);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
@@ -95,8 +95,9 @@ public class StudentController {
     }
 
     @PostMapping("edit")
-    public String editStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, BindingResult bindingResult) {
+    public String editStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("courses", courseService.findAll());
             return "editStudent";
         }
 
