@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Thêm mới sinh viên</h2>
+<form th:action="@{/students/add}" method="post" enctype="multipart/form-data" th:object="${studentDTO}">
+    <label>Mã sinh viên:</label>
+    <input type="text" th:field="*{id}"/> <span th:errors="*{id}" class="error"></span><br/>
+    <label>Tên sinh viên:</label>
+    <input type="text" th:field="*{name}"/> <span th:errors="*{name}" class="error"></span><br/>
+    <label>Email:</label>
+    <input type="text" th:field="*{email}"/> <span th:errors="*{email}" class="error"></span><br/>
+    <label>Số điện thoại:</label>
+    <input type="text" th:field="*{phone}"/> <span th:errors="*{phone}" class="error"></span><br/>
+    <label>Giới tính:</label>
+    <input type="radio" th:field="*{sex}" value="true"/> Nam
+    <input type="radio" th:field="*{sex}" value="false"/> Nữ
+    <span th:errors="*{sex}" class="error"></span><br/>
+    <label>Ngày sinh:</label>
+    <input type="date" th:field="*{bod}"/> <span th:errors="*{bod}" class="error"></span><br/>
+    <label>Khóa học:</label>
+    <select th:field="*{courseIds}" multiple="multiple">
+        <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
+    </select>
+    <span th:errors="*{courseIds}" class="error"></span><br/>
+    <label>Ảnh đại diện:</label>
+    <input type="file" name="imageFile"/>
+    <label>Trạng thái:</label>
+    <input type="radio" th:field="*{status}" value="true"/> Đang học
+    <input type="radio" th:field="*{status}" value="false"/> Nghỉ học
+    <span th:errors="*{status}" class="error"></span><br/>
+    <button type="submit">Thêm mới</button>
+</form>
+</body>
+</html>

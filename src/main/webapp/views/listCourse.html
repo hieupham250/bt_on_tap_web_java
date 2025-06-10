@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="/courses/add">Thêm mới khóa học</a> <br> <br>
+    <h2>Danh sách khóa học</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Mã khóa học</th>
+            <th>Tên khóa học</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${courses}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.description}"></td>
+            <td>
+                <a th:href="@{'/courses/edit/' + ${c.id}}">Sửa</a>
+                <a th:href="@{'/courses/delete/' + ${c.id}}" onclick="return confirm('Xác nhận xóa?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

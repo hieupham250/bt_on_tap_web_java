@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chỉnh sửa khóa học</h2>
+    <form th:action="@{/courses/edit}" method="post" th:object="${courseDTO}">
+        <input type="hidden" th:field="*{id}"/>
+        <label>Tên khóa học:</label>
+        <input type="text" th:field="*{name}"/> <span th:errors="*{name}" class="error"></span><br/>
+        <label>Mô tả:</label>
+        <textarea th:field="*{description}"/> <span th:errors="*{description}" class="error"></span><br/>
+        <button type="submit">Lưu</button>
+    </form>
+</body>
+</html>
