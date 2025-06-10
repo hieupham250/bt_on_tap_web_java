@@ -49,7 +49,7 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    public String addStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, @RequestParam("imageFile") MultipartFile imageFile, BindingResult bindingResult, Model model) {
+    public String addStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("courses", courseService.findAll());
             return "addStudent";
@@ -68,7 +68,7 @@ public class StudentController {
         List<Course> selectedCourses = courseService.findByIds(studentDTO.getCourseIds());
         student.setCourses(selectedCourses);
 
-        studentService.create(student, imageFile);
+        studentService.create(student, studentDTO.getImageFile());
 
         return "redirect:/students";
     }
@@ -95,12 +95,13 @@ public class StudentController {
     }
 
     @PostMapping("edit")
-    public String editStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, @RequestParam("imageFile") MultipartFile imageFile, BindingResult bindingResult) {
+    public String editStudent(@Valid @ModelAttribute("studentDTO") StudentDTO studentDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editStudent";
         }
 
         Student student = new Student();
+        student.setId(studentDTO.getId());
         student.setName(studentDTO.getName());
         student.setEmail(studentDTO.getEmail());
         student.setPhone(studentDTO.getPhone());
@@ -112,7 +113,7 @@ public class StudentController {
         List<Course> selectedCourses = courseService.findByIds(studentDTO.getCourseIds());
         student.setCourses(selectedCourses);
 
-        studentService.update(student, imageFile);
+        studentService.update(student, studentDTO.getImageFile());
 
         return "redirect:/students";
     }

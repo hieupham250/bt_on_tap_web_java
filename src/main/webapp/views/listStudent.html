@@ -7,7 +7,7 @@
 <body>
 <a href="/students/add">Thêm mới sinh viên</a> <br> <br>
     <h2>Danh sách sinh viên</h2>
-    <table>
+    <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
                 <th>Mã sinh viên</th>
@@ -28,14 +28,21 @@
                 <td th:text="${s.name}"></td>
                 <td th:text="${s.email}"></td>
                 <td th:text="${s.phone}"></td>
-                <td th:text="${s.sex}"></td>
+                <td th:text="${s.sex} ? 'Nam' : 'Nữ'"></td>
                 <td th:text="${s.bod}"></td>
-                <td th:text="${s.courses}"></td>
                 <td>
-                    <img src="${s.avatar}" alt="avatar">
+                    <ul>
+                        <li th:each="c : ${s.courses}" th:text="${c.name}"></li>
+                    </ul>
                 </td>
-                <td th:text="${s.status}"></td>
-                <td></td>
+                <td>
+                    <img th:src="${s.avatar}" alt="avatar" width="60" height="60">
+                </td>
+                <td th:text="${s.status} ? 'Đang học' : 'Nghỉ học'"></td>
+                <td>
+                    <a th:href="@{'/students/edit/' + ${s.id}}">Sửa</a>
+                    <a th:href="@{'/students/delete/' + ${s.id}}" onclick="return confirm('Xác nhận xóa?')">Xóa</a>
+                </td>
             </tr>
         </tbody>
     </table>
