@@ -1,5 +1,7 @@
 package com.data.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.data.dto.StudentDTO;
 import com.data.entity.Course;
 import com.data.entity.Student;
@@ -10,13 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("students")
 public class StudentController {
+    @Autowired
+    private Cloudinary cloudinary;
+
     @Autowired
     private StudentService studentService;
 
@@ -68,7 +75,18 @@ public class StudentController {
         List<Course> selectedCourses = courseService.findByIds(studentDTO.getCourseIds());
         student.setCourses(selectedCourses);
 
-        studentService.create(student, studentDTO.getImageFile());
+        try {
+            MultipartFile imageFile = studentDTO.getImageFile();
+            if (imageFile != null && !imageFile.isEmpty()) {
+                Map uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
+                student.setAvatar(uploadResult.get("url").toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Upload ảnh thất bại", e);
+        }
+
+        studentService.create(student);
 
         return "redirect:/students";
     }
@@ -114,7 +132,22 @@ public class StudentController {
         List<Course> selectedCourses = courseService.findByIds(studentDTO.getCourseIds());
         student.setCourses(selectedCourses);
 
-        studentService.update(student, studentDTO.getImageFile());
+        try {
+            MultipartFile imageFile = studentDTO.getImageFile();
+            if (imageFile != null && !imageFile.isEmpty()) {
+                Map uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
+                student.setAvatar(uploadResult.get("url").toString());
+            } else {
+                // Giữ lại avatar cũ nếu không upload ảnh mới
+                Student oldStudent = studentService.findById(student.getId());
+                student.setAvatar(oldStudent.getAvatar());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Upload ảnh thất bại", e);
+        }
+
+        studentService.update(student);
 
         return "redirect:/students";
     }

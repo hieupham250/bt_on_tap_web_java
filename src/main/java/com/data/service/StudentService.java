@@ -11,7 +11,7 @@ public interface StudentService {
     Student findById(String id);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
-    void create(Student student, MultipartFile imageFile);
-    void update(Student student, MultipartFile imageFile);
+    void create(Student student);
+    void update(Student student);
     void delete(String id);
 }
